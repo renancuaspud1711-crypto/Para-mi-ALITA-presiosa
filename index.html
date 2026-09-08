@@ -158,12 +158,25 @@
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
       background: #2b1f1d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
     }
 
-    .img-container img {
-      width: 100%;
-      display: block;
-      border-radius: 15px;
+    .animated-heart {
+      width: 100px;
+      height: 100px;
+      fill: #ff4d6d;
+      animation: heartbeat 1.2s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.15); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.15); }
+      70% { transform: scale(1); }
     }
 
     .letter-body {
@@ -180,6 +193,11 @@
 </head>
 <body>
 
+  <!-- Reproductor de audio oculto -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
+  </audio>
+
   <canvas id="galaxyCanvas"></canvas>
 
   <div class="start-screen" id="startScreen" onclick="startGalaxy()">
@@ -195,8 +213,9 @@
       <div class="modal-title">Te amo Alita ❤️</div>
       
       <div class="img-container">
-        <!-- GIF Directo vía CDN Pública Anti-Bloqueo -->
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2p2Y3o0OHhvb3E2amRndmZhOTRtODlsMHRsZ3FiMmdsM3R1eTJmdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LpDmM2w93MuxvUK2C2/giphy.gif" alt="Ositos cariñosos" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400';">
+        <svg class="animated-heart" viewBox="0 0 32 32">
+          <path d="M16 28.5 C16 28.5 3 20.5 3 11.5 C3 6.5 7 3.5 11.5 3.5 C14.5 3.5 15.8 5 16 5 C16.2 5 17.5 3.5 20.5 3.5 C25 3.5 29 6.5 29 11.5 C29 20.5 16 28.5 16 28.5 Z" />
+        </svg>
       </div>
 
       <div class="letter-body">
@@ -288,6 +307,11 @@
 
     function startGalaxy() {
       isStarted = true;
+      
+      // Inicia la música de fondo
+      const music = document.getElementById('bgMusic');
+      music.play().catch(e => console.log("Audio play error:", e));
+
       document.getElementById('startScreen').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('startScreen').style.display = 'none';
