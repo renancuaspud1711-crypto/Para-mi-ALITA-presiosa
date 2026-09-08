@@ -24,7 +24,6 @@
       position: relative;
     }
 
-    /* Canvas para las partículas del corazón galáctico */
     #galaxyCanvas {
       position: absolute;
       top: 0;
@@ -34,7 +33,6 @@
       z-index: 1;
     }
 
-    /* Pantalla inicial */
     .start-screen {
       position: absolute;
       z-index: 10;
@@ -70,7 +68,6 @@
       100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 77, 109, 0.6); }
     }
 
-    /* Botón flotante para la carta */
     .letter-icon-btn {
       position: absolute;
       bottom: 40px;
@@ -93,7 +90,6 @@
       transform: scale(1.05);
     }
 
-    /* Modal emergente con la carta */
     .modal-overlay {
       position: absolute;
       top: 0;
@@ -184,23 +180,21 @@
 
   <canvas id="galaxyCanvas"></canvas>
 
-  <!-- Pantalla inicial -->
   <div class="start-screen" id="startScreen" onclick="startGalaxy()">
     <div class="start-title">Te amo Alita 💗</div>
     <button class="start-btn">Toca para iniciar ❤️</button>
   </div>
 
-  <!-- Botón flotante -->
   <button class="letter-icon-btn" id="letterBtn" onclick="openModal()">💌 Abrir carta</button>
 
-  <!-- Carta emergente -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="card-modal">
       <button class="close-btn" onclick="closeModal()">✕</button>
       <div class="modal-title">Te amo Alita ❤️</div>
       
       <div class="img-container">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1cDR6eHR0eTl2czZubDV2Z2JmYm9ocjQ3dWlxb3hicnlrdjlybiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZ1prAOPf3pMc05N8C/giphy.gif" alt="Ositos Bubu y Dudu">
+        <!-- Enlace del GIF actualizado y funcional -->
+        <img src="https://c.tenor.com/a4fJqgU3P-sAAAAC/bubu-dudu-bubu.gif" alt="Ositos Bubu y Dudu">
       </div>
 
       <div class="letter-body">
