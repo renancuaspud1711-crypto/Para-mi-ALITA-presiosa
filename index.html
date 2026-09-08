@@ -2,108 +2,282 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corazón Galáctico - Te amo Alita 💗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Te amo Alita 💗 — Experiencia Enterprise Ultra Ampliada</title>
   <style>
-    * {
+    /* ==========================================================================
+       1. SISTEMA DE VARIABLES GLOBALES Y RESET DE ESTILOS DE NVEL PRODUCCIÓN
+       ========================================================================== */
+    :root {
+      --bg-primary: #020005;
+      --bg-secondary: #0a0512;
+      --bg-overlay: rgba(2, 0, 5, 0.85);
+      --text-main: #ffffff;
+      --text-muted: #e5e7eb;
+      --accent-pink: #ff4d6d;
+      --accent-soft-pink: #ff758f;
+      --accent-light-pink: #ffb7c5;
+      --accent-purple: #7209b7;
+      --accent-deep-purple: #3f37c9;
+      --panel-bg: rgba(12, 10, 16, 0.94);
+      --panel-border: rgba(255, 183, 197, 0.38);
+      --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-family-serif: "Georgia", "Times New Roman", serif;
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-glow-pink: 0 0 40px rgba(255, 77, 109, 0.85);
+      --shadow-glow-soft: 0 0 25px rgba(255, 183, 197, 0.45);
+      --blur-backdrop: blur(16px);
+    }
+
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      background: #000;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      min-height: 100vh;
+    html, body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-family-sans);
+      height: 100vh;
+      height: 100dvh;
+      width: 100vw;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       position: relative;
+      touch-action: none;
     }
 
-    #galaxyCanvas {
+    /* ==========================================================================
+       2. CANVAS Y CAPAS DE RENDERIZADO
+       ========================================================================== */
+    #mainCanvas {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: 1;
+      display: block;
+      background: radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     }
 
-    .start-screen {
-      position: absolute;
-      z-index: 10;
-      text-align: center;
-      cursor: pointer;
-      transition: opacity 0.8s ease;
-    }
-
-    .start-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #ffb7c5;
-      text-shadow: 0 0 20px rgba(255, 183, 197, 0.8);
-      margin-bottom: 15px;
-    }
-
-    .start-btn {
-      background: linear-gradient(135deg, #ff4d6d, #ff758f);
-      color: white;
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 50px;
-      border: none;
-      box-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
-      cursor: pointer;
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 77, 109, 0.6); }
-      50% { transform: scale(1.06); box-shadow: 0 0 25px rgba(255, 77, 109, 0.9); }
-      100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 77, 109, 0.6); }
-    }
-
-    .letter-icon-btn {
-      position: absolute;
-      bottom: 40px;
-      z-index: 10;
-      background: rgba(255, 77, 109, 0.85);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
-      display: none;
-      transition: transform 0.3s ease;
-    }
-
-    .letter-icon-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .modal-overlay {
+    #fxCanvas {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 20;
+      z-index: 2;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       3. INTERFAZ DE BIENVENIDA Y PANTALLA PRINCIPAL
+       ========================================================================== */
+    .start-screen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      width: 90%;
+      max-width: 520px;
+      padding: 40px 20px;
+      border-radius: 32px;
+      background: rgba(10, 5, 18, 0.4);
+      border: 1px solid rgba(255, 183, 197, 0.15);
+      backdrop-filter: var(--blur-backdrop);
+      -webkit-backdrop-filter: var(--blur-backdrop);
+      transition: opacity var(--transition-slow), transform var(--transition-slow);
+    }
+
+    .start-screen.hidden {
+      opacity: 0;
+      transform: translate(-50%, -65%);
+      pointer-events: none;
+    }
+
+    .start-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--accent-light-pink);
+      text-shadow: 0 0 25px rgba(255, 183, 197, 0.85), 0 0 50px rgba(255, 77, 109, 0.65);
+      margin-bottom: 12px;
+      letter-spacing: 1.5px;
+      line-height: 1.2;
+    }
+
+    .start-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-soft-pink));
+      color: #ffffff;
+      padding: 22px 54px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      border-radius: 50px;
+      border: none;
+      box-shadow: var(--shadow-glow-pink);
+      cursor: pointer;
+      animation: pulseAnimation 1.6s infinite ease-in-out;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      outline: none;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 55px rgba(255, 77, 109, 1);
+    }
+
+    .start-btn:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes pulseAnimation {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 22px rgba(255, 77, 109, 0.6);
+      }
+      50% {
+        transform: scale(1.07);
+        box-shadow: 0 0 45px rgba(255, 77, 109, 0.98);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 22px rgba(255, 77, 109, 0.6);
+      }
+    }
+
+    /* ==========================================================================
+       4. PANEL DE CONTROL E INTERFAZ FLOTANTE
+       ========================================================================== */
+    .bottom-controls {
+      position: fixed;
+      bottom: calc(24px + env(safe-area-inset-bottom, 15px));
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-slow) 0.2s;
+    }
+
+    .bottom-controls.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .buttons-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      background: rgba(255, 77, 109, 0.88);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 14px 26px;
+      border-radius: 50px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 77, 109, 0.5);
+      backdrop-filter: var(--blur-backdrop);
+      -webkit-backdrop-filter: var(--blur-backdrop);
+      transition: background var(--transition-medium), transform var(--transition-fast), box-shadow var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 117, 143, 0.95);
+      box-shadow: 0 6px 28px rgba(255, 77, 109, 0.75);
+    }
+
+    .control-btn:active {
+      transform: scale(0.93);
+    }
+
+    .volume-container {
+      background: rgba(18, 16, 20, 0.88);
+      border: 1px solid var(--panel-border);
+      padding: 10px 22px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 280px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+      backdrop-filter: var(--blur-backdrop);
+      -webkit-backdrop-filter: var(--blur-backdrop);
+    }
+
+    .volume-icon {
+      font-size: 1.0rem;
+      color: var(--accent-soft-pink);
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.22);
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-pink);
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255, 77, 109, 0.9);
+      border: 2px solid #ffffff;
+    }
+
+    /* ==========================================================================
+       5. MODAL DE CARTA Y CONTENIDOS EXTENDIDOS
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-overlay);
+      z-index: 1000;
       display: flex;
       justify-content: center;
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
+      transition: opacity var(--transition-medium);
       padding: 20px;
     }
 
@@ -113,18 +287,18 @@
     }
 
     .card-modal {
-      background: rgba(28, 25, 23, 0.95);
-      border: 1px solid rgba(255, 183, 197, 0.3);
-      border-radius: 20px;
-      padding: 25px;
-      max-width: 420px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 28px;
+      padding: 36px;
+      max-width: 520px;
       width: 100%;
-      max-height: 85vh;
+      max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 0 30px rgba(255, 77, 109, 0.4);
+      box-shadow: 0 0 50px rgba(255, 77, 109, 0.45);
       position: relative;
-      transform: translateY(20px);
-      transition: transform 0.5s ease;
+      transform: translateY(30px);
+      transition: transform var(--transition-medium);
     }
 
     .modal-overlay.active .card-modal {
@@ -133,45 +307,42 @@
 
     .close-btn {
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 20px;
+      right: 20px;
       background: none;
       border: none;
-      color: #ff758f;
-      font-size: 1.5rem;
+      color: var(--accent-soft-pink);
+      font-size: 1.8rem;
       cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+
+    .close-btn:hover {
+      color: var(--accent-pink);
     }
 
     .modal-title {
-      color: #ff4d6d;
-      font-size: 1.8rem;
+      color: var(--accent-pink);
+      font-size: 2.1rem;
       font-weight: 800;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
       text-align: center;
     }
 
-    .img-container {
-      width: 100%;
-      max-width: 220px;
-      margin: 0 auto 15px auto;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
-      background: #2b1f1d;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
+    .heart-header {
+      text-align: center;
+      margin-bottom: 18px;
     }
 
     .animated-heart {
-      width: 100px;
-      height: 100px;
-      fill: #ff4d6d;
-      animation: heartbeat 1.2s infinite ease-in-out;
+      width: 54px;
+      height: 54px;
+      fill: var(--accent-pink);
+      filter: drop-shadow(0 0 12px rgba(255, 77, 109, 0.8));
+      animation: heartbeatAnimation 1.2s infinite ease-in-out;
     }
 
-    @keyframes heartbeat {
+    @keyframes heartbeatAnimation {
       0% { transform: scale(1); }
       14% { transform: scale(1.15); }
       28% { transform: scale(1); }
@@ -180,151 +351,826 @@
     }
 
     .letter-body {
-      color: #e5e7eb;
-      font-size: 0.95rem;
-      line-height: 1.6;
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      line-height: 1.8;
       text-align: justify;
     }
 
     .letter-body p {
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Reproductor de audio oculto -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
-  </audio>
+  <canvas id="mainCanvas"></canvas>
+  <canvas id="fxCanvas"></canvas>
 
-  <canvas id="galaxyCanvas"></canvas>
-
-  <div class="start-screen" id="startScreen" onclick="startGalaxy()">
+  <div class="start-screen" id="startScreen">
     <div class="start-title">Te amo Alita 💗</div>
-    <button class="start-btn">Toca para iniciar ❤️</button>
+    <div class="start-subtitle">Una experiencia interactiva creada especialmente para ti</div>
+    <button class="start-btn" id="startBtn" type="button">Iniciar Experiencia ✨</button>
   </div>
 
-  <button class="letter-icon-btn" id="letterBtn" onclick="openModal()">💌 Abrir carta</button>
+  <div class="bottom-controls" id="bottomControls">
+    <div class="buttons-row">
+      <button class="control-btn" id="musicBtn" type="button">🔊 Música</button>
+      <button class="control-btn" id="modeBtn" type="button">✨ Cambiar Modo</button>
+      <button class="control-btn" id="letterBtn" type="button">💌 Abrir carta</button>
+      <button class="control-btn" id="burstBtn" type="button">🎆 Lluvia de Amor</button>
+    </div>
+    
+    <div class="volume-container">
+      <span class="volume-icon">🔈</span>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.7">
+      <span class="volume-icon">🔊</span>
+    </div>
+  </div>
 
   <div class="modal-overlay" id="modalOverlay">
     <div class="card-modal">
-      <button class="close-btn" onclick="closeModal()">✕</button>
+      <button class="close-btn" id="closeBtn" type="button">✕</button>
       <div class="modal-title">Te amo Alita ❤️</div>
       
-      <div class="img-container">
+      <div class="heart-header">
         <svg class="animated-heart" viewBox="0 0 32 32">
-          <path d="M16 28.5 C16 28.5 3 20.5 3 11.5 C3 6.5 7 3.5 11.5 3.5 C14.5 3.5 15.8 5 16 5 C16.2 5 17.5 3.5 20.5 3.5 C25 3.5 29 6.5 29 11.5 C29 20.5 16 28.5 16 28.5 Z" />
+          <path d="M16 28.5 C16 28.5 3 20.5 3 11.5 C3 6.5 7 3.5 11.5 3.5 C14.5 3.5 16 6.5 16 6.5 C16 6.5 17.5 3.5 20.5 3.5 C25 3.5 29 6.5 29 11.5 C29 20.5 16 28.5 16 28.5 Z"></path>
         </svg>
       </div>
 
       <div class="letter-body">
         <p><strong>💗 Para Alejandra</strong></p>
-        <p>Alejandra, quiero agradecerte por todos los momentos bonitos que hemos compartido juntos. Gracias por cada sonrisa, cada conversación, cada abrazo, cada aventura y por todas esas pequeñas cosas que, aunque quizás parezcan simples, para mí significan muchísimo.</p>
+        <p>Mi princesa hermosa, te quiero agradecer por todos los momentos bonitos que hemos compartido juntos. Gracias por cada sonrisa, cada conversación, cada abrazo, cada aventura y por todas esas pequeñas cosas que, aunque quizás parezcan simples, para mí significan muchísimo.</p>
         <p>A tu lado he podido guardar recuerdos que siempre llevaré conmigo. Hemos reído, hemos aprendido, hemos pasado por momentos fáciles y otros no tanto, pero cada uno de ellos ha hecho que nuestra historia sea especial.</p>
         <p>Gracias por estar a mi lado, por tu cariño, por tu paciencia y por hacer que tantos días sean mejores simplemente con tu presencia. Me siento muy afortunado de haber compartido tantos momentos contigo y espero que todavía nos queden muchísimas experiencias por vivir, lugares por conocer y recuerdos por crear.</p>
         <p>Gracias por ser parte de mi vida, mi Alita. ❤️</p>
         <p>No sé qué nos depare el futuro, pero sí sé que todos los momentos que hemos vivido juntos tienen un lugar muy especial en mi corazón.</p>
-        <p>Te quiero muchísimo y espero seguir escribiendo nuestra historia junto a ti. 🧸💗✨</p>
+        <p>Te quiero muchísimo y espero seguir escribiendo nuestra historia junto a ti, hasta de viejitos seguir y, aun después de la muerte, volvernos a encontrar y juntos volver a reír. 🧸💗✨</p>
       </div>
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById('galaxyCanvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    /* ==========================================================================
+       ARQUITECTURA ENTERPRISE EXPANDIDA: FÍSICA Y ÁLGEBRA VECTORIAL
+       ========================================================================== */
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
+    (function() {
+      "use strict";
 
-    const particles = [];
-    const particleCount = 1200;
+      /* ========================================================================
+         1. MOTOR MATEMÁTICO Y VECTORIAL 2D COMPLETO
+         ======================================================================== */
+      class Vector2D {
+        constructor(x = 0, y = 0) {
+          this.x = x;
+          this.y = y;
+        }
 
-    function heartShape(t) {
-      const x = 16 * Math.pow(Math.sin(t), 3);
-      const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-      return { x, y };
-    }
+        set(x, y) {
+          this.x = x;
+          this.y = y;
+          return this;
+        }
 
-    class Particle {
-      constructor() {
-        const t = Math.random() * Math.PI * 2;
-        const pos = heartShape(t);
-        const scale = Math.min(width, height) / 35;
-        
-        this.baseX = pos.x * scale + width / 2;
-        this.baseY = pos.y * scale + height / 2;
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 2 + 1;
-        this.color = `hsl(${Math.random() * 40 + 330}, 100%, ${Math.random() * 40 + 60}%)`;
-        this.speed = Math.random() * 0.03 + 0.01;
-      }
+        copy() {
+          return new Vector2D(this.x, this.y);
+        }
 
-      update(active) {
-        if (active) {
-          this.x += (this.baseX - this.x) * this.speed;
-          this.y += (this.baseY - this.y) * this.speed;
-        } else {
-          this.x += Math.sin(this.y * 0.01) * 0.5;
-          this.y -= 0.3;
-          if (this.y < 0) this.y = height;
+        add(v) {
+          this.x += v.x;
+          this.y += v.y;
+          return this;
+        }
+
+        sub(v) {
+          this.x -= v.x;
+          this.y -= v.y;
+          return this;
+        }
+
+        mult(n) {
+          this.x *= n;
+          this.y *= n;
+          return this;
+        }
+
+        div(n) {
+          if (n !== 0) {
+            this.x /= n;
+            this.y /= n;
+          }
+          return this;
+        }
+
+        magSq() {
+          return this.x * this.x + this.y * this.y;
+        }
+
+        mag() {
+          return Math.sqrt(this.magSq());
+        }
+
+        heading() {
+          return Math.atan2(this.y, this.x);
+        }
+
+        normalize() {
+          const m = this.mag();
+          if (m !== 0) this.div(m);
+          return this;
+        }
+
+        limit(max) {
+          const mSq = this.magSq();
+          if (mSq > max * max) {
+            this.div(Math.sqrt(mSq)).mult(max);
+          }
+          return this;
+        }
+
+        setMag(len) {
+          return this.normalize().mult(len);
+        }
+
+        rotate(angle) {
+          const newHeading = this.heading() + angle;
+          const mag = this.mag();
+          this.x = Math.cos(newHeading) * mag;
+          this.y = Math.sin(newHeading) * mag;
+          return this;
+        }
+
+        lerp(target, amt) {
+          this.x += (target.x - this.x) * amt;
+          this.y += (target.y - this.y) * amt;
+          return this;
+        }
+
+        dist(v) {
+          const dx = this.x - v.x;
+          const dy = this.y - v.y;
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        static add(v1, v2) {
+          return new Vector2D(v1.x + v2.x, v1.y + v2.y);
+        }
+
+        static sub(v1, v2) {
+          return new Vector2D(v1.x - v2.x, v1.y - v2.y);
+        }
+
+        static dist(v1, v2) {
+          return v1.dist(v2);
+        }
+
+        static random2D() {
+          const angle = Math.random() * Math.PI * 2;
+          return new Vector2D(Math.cos(angle), Math.sin(angle));
         }
       }
 
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+      class MathUtilityService {
+        static calculateHeartPosition(t) {
+          const x = 16 * Math.pow(Math.sin(t), 3);
+          const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+          return new Vector2D(x, y);
+        }
+
+        static calculateSpiralPosition(t, index) {
+          const r = 9.5 * Math.sqrt(index);
+          const theta = index * 0.135 + t;
+          return new Vector2D(r * Math.cos(theta), r * Math.sin(theta));
+        }
+
+        static calculateRosePosition(theta, k = 4) {
+          const r = 180 * Math.cos(k * theta);
+          return new Vector2D(r * Math.cos(theta), r * Math.sin(theta));
+        }
+
+        static getRandomArbitrary(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        static clamp(val, min, max) {
+          return Math.max(min, Math.min(max, val));
+        }
+
+        static mapValue(value, start1, stop1, start2, stop2) {
+          return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+        }
       }
-    }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
+      /* ========================================================================
+         2. SINTETIZADOR WEB AUDIO POLIFÓNICO CON PROCESAMIENTO DE REVERB Y ECO
+         ======================================================================== */
+      class SynthesizerAudioEngine {
+        constructor() {
+          this.audioContext = null;
+          this.masterGainNode = null;
+          this.delayNode = null;
+          this.feedbackGain = null;
+          this.reverbNode = null;
+          this.sequenceTimeoutId = null;
 
-    let isStarted = false;
+          this.melodySequence = [
+            [261.63, 0.5], [329.63, 0.5], [392.00, 0.75], [523.25, 0.5],
+            [329.63, 0.5], [293.66, 0.5], [349.23, 0.75], [440.00, 0.5],
+            [261.63, 0.5], [329.63, 0.5], [440.00, 0.75], [587.33, 0.5],
+            [392.00, 0.5], [349.23, 0.5], [329.63, 1.00], [392.00, 0.5],
+            [523.25, 0.5], [587.33, 0.5], [659.25, 0.75], [698.46, 0.5],
+            [659.25, 0.5], [587.33, 0.5], [523.25, 0.75], [440.00, 0.5]
+          ];
 
-    function animate() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-      ctx.fillRect(0, 0, width, height);
+          this.bassSequence = [
+            [130.81, 2.0], [146.83, 2.0], [174.61, 2.0], [164.81, 2.0],
+            [130.81, 2.0], [174.61, 2.0], [196.00, 2.0], [164.81, 2.0]
+          ];
+        }
 
-      particles.forEach(p => {
-        p.update(isStarted);
-        p.draw();
+        initializeContext() {
+          if (this.audioContext) return;
+
+          const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtxClass) return;
+
+          this.audioContext = new AudioCtxClass();
+          this.masterGainNode = this.audioContext.createGain();
+          this.masterGainNode.gain.setValueAtTime(STATE.currentVolume, this.audioContext.currentTime);
+
+          this.delayNode = this.audioContext.createDelay();
+          this.delayNode.delayTime.value = 0.35;
+          this.feedbackGain = this.audioContext.createGain();
+          this.feedbackGain.gain.value = 0.32;
+
+          this.delayNode.connect(this.feedbackGain);
+          this.feedbackGain.connect(this.delayNode);
+
+          this.masterGainNode.connect(this.audioContext.destination);
+          this.masterGainNode.connect(this.delayNode);
+          this.delayNode.connect(this.audioContext.destination);
+        }
+
+        setVolumeLevel(level) {
+          const clampedLevel = MathUtilityService.clamp(level, 0, 1);
+          STATE.currentVolume = clampedLevel;
+
+          if (this.masterGainNode && this.audioContext) {
+            this.masterGainNode.gain.linearRampToValueAtTime(
+              clampedLevel,
+              this.audioContext.currentTime + CONFIG.audio.fadeDuration
+            );
+          }
+        }
+
+        triggerTone(frequency, duration, waveType, volume, startTime) {
+          if (!this.audioContext) return;
+
+          const oscillator = this.audioContext.createOscillator();
+          const gainNode = this.audioContext.createGain();
+
+          oscillator.type = waveType;
+          oscillator.frequency.setValueAtTime(frequency, startTime);
+
+          gainNode.gain.setValueAtTime(0.0001, startTime);
+          gainNode.gain.exponentialRampToValueAtTime(volume, startTime + 0.06);
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(this.masterGainNode);
+
+          oscillator.start(startTime);
+          oscillator.stop(startTime + duration + 0.12);
+        }
+
+        executeSequenceLoop() {
+          if (!STATE.isPlayingMusic || !this.audioContext) return;
+
+          const currentTime = this.audioContext.currentTime;
+          let playbackTime = currentTime + 0.05;
+
+          this.melodySequence.forEach(([freq, dur]) => {
+            this.triggerTone(freq, dur, "sine", 0.14, playbackTime);
+            this.triggerTone(freq * 1.5, dur * 0.45, "triangle", 0.025, playbackTime);
+            playbackTime += dur;
+          });
+
+          let bassTime = currentTime + 0.05;
+          this.bassSequence.forEach(([freq, dur]) => {
+            this.triggerTone(freq, dur, "sine", 0.07, bassTime);
+            bassTime += dur;
+          });
+
+          const totalLoopDurationMs = (playbackTime - currentTime) * 1000;
+          this.sequenceTimeoutId = setTimeout(() => {
+            this.executeSequenceLoop();
+          }, totalLoopDurationMs + 100);
+        }
+
+        async startPlayback() {
+          this.initializeContext();
+
+          if (this.audioContext && this.audioContext.state === "suspended") {
+            await this.audioContext.resume();
+          }
+
+          if (!STATE.isPlayingMusic) {
+            STATE.isPlayingMusic = true;
+            this.executeSequenceLoop();
+          }
+        }
+
+        async togglePlaybackState() {
+          if (!this.audioContext) {
+            await this.startPlayback();
+            return true;
+          }
+
+          if (this.audioContext.state === "running") {
+            await this.audioContext.suspend();
+            STATE.isPlayingMusic = false;
+            if (this.sequenceTimeoutId) clearTimeout(this.sequenceTimeoutId);
+            return false;
+          } else {
+            await this.audioContext.resume();
+            STATE.isPlayingMusic = true;
+            this.executeSequenceLoop();
+            return true;
+          }
+        }
+      }
+
+      /* ========================================================================
+         3. CONFIGURACIÓN Y ESTADO DE LA APLICACIÓN GLOBAL
+         ======================================================================== */
+      const CONFIG = {
+        canvas: {
+          clearAlpha: 0.15,
+          particleDensityRatio: 0.0014,
+          starDensityRatio: 0.0004,
+          petalsCount: 55
+        },
+        heart: {
+          scaleFactorDivider: 60,
+          offsetY: -45,
+          hueBase: 315,
+          hueRange: 65
+        },
+        audio: {
+          defaultVolume: 0.7,
+          fadeDuration: 0.12
+        }
+      };
+
+      const STATE = {
+        isStarted: false,
+        isPlayingMusic: false,
+        displayMode: 0, // 0: Corazón, 1: Espiral, 2: Flor de Rosa, 3: Dispersión
+        currentVolume: CONFIG.audio.defaultVolume,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight
+      };
+
+      /* ========================================================================
+         4. SISTEMA DE ENTIDADES VISUALES Y FÍSICA APLICADA
+         ======================================================================== */
+      class BackgroundStar {
+        constructor() {
+          this.pos = new Vector2D();
+          this.size = 0;
+          this.alpha = 0;
+          this.twinkleSpeed = 0;
+          this.resetPosition();
+        }
+
+        resetPosition() {
+          this.pos.set(
+            Math.random() * STATE.viewportWidth,
+            Math.random() * STATE.viewportHeight
+          );
+          this.size = MathUtilityService.getRandomArbitrary(0.2, 1.8);
+          this.alpha = Math.random();
+          this.twinkleSpeed = MathUtilityService.getRandomArbitrary(0.003, 0.018);
+        }
+
+        updateState() {
+          this.alpha += this.twinkleSpeed;
+          if (this.alpha > 1 || this.alpha < 0) {
+            this.twinkleSpeed = -this.twinkleSpeed;
+          }
+        }
+
+        render(context) {
+          context.save();
+          context.fillStyle = `rgba(255, 255, 255, ${Math.abs(this.alpha)})`;
+          context.beginPath();
+          context.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+        }
+      }
+
+      class FallingPetal {
+        constructor() {
+          this.pos = new Vector2D(
+            Math.random() * STATE.viewportWidth,
+            Math.random() * -STATE.viewportHeight
+          );
+          this.size = MathUtilityService.getRandomArbitrary(3.5, 8);
+          this.speedY = MathUtilityService.getRandomArbitrary(0.9, 2.5);
+          this.speedX = MathUtilityService.getRandomArbitrary(-0.6, 0.6);
+          this.angle = Math.random() * Math.PI * 2;
+          this.spin = MathUtilityService.getRandomArbitrary(-0.025, 0.025);
+          this.color = `hsl(${MathUtilityService.getRandomArbitrary(325, 355)}, 92%, 68%)`;
+        }
+
+        updateState() {
+          this.pos.y += this.speedY;
+          this.pos.x += Math.sin(this.pos.y * 0.012) + this.speedX;
+          this.angle += this.spin;
+
+          if (this.pos.y > STATE.viewportHeight + 25) {
+            this.pos.y = -25;
+            this.pos.x = Math.random() * STATE.viewportWidth;
+          }
+        }
+
+        render(context) {
+          context.save();
+          context.translate(this.pos.x, this.pos.y);
+          context.rotate(this.angle);
+          context.fillStyle = this.color;
+          context.beginPath();
+          context.ellipse(0, 0, this.size, this.size * 0.5, 0, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+        }
+      }
+
+      class ShootingStar {
+        constructor() {
+          this.reset();
+        }
+
+        reset() {
+          this.pos = new Vector2D(
+            MathUtilityService.getRandomArbitrary(0, STATE.viewportWidth),
+            MathUtilityService.getRandomArbitrary(0, STATE.viewportHeight * 0.5)
+          );
+          this.len = MathUtilityService.getRandomArbitrary(90, 170);
+          this.speed = MathUtilityService.getRandomArbitrary(14, 22);
+          this.size = MathUtilityService.getRandomArbitrary(1.2, 2.5);
+          this.active = false;
+          this.alpha = 1;
+        }
+
+        spawn() {
+          this.reset();
+          this.active = true;
+        }
+
+        updateState() {
+          if (!this.active) return;
+          this.pos.x -= this.speed;
+          this.pos.y += this.speed * 0.6;
+          this.alpha -= 0.016;
+
+          if (this.alpha <= 0 || this.pos.x < 0 || this.pos.y > STATE.viewportHeight) {
+            this.active = false;
+          }
+        }
+
+        render(context) {
+          if (!this.active) return;
+          context.save();
+          const gradient = context.createLinearGradient(
+            this.pos.x, this.pos.y,
+            this.pos.x + this.len, this.pos.y - this.len * 0.6
+          );
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+          gradient.addColorStop(1, "rgba(255, 183, 197, 0)");
+
+          context.strokeStyle = gradient;
+          context.lineWidth = this.size;
+          context.beginPath();
+          context.moveTo(this.pos.x, this.pos.y);
+          context.lineTo(this.pos.x + this.len, this.pos.y - this.len * 0.6);
+          context.stroke();
+          context.restore();
+        }
+      }
+
+      class HeartParticle {
+        constructor(index) {
+          this.index = index;
+          this.pos = new Vector2D(
+            Math.random() * STATE.viewportWidth,
+            Math.random() * STATE.viewportHeight
+          );
+          this.targetPos = new Vector2D();
+          this.size = 0;
+          this.color = "";
+          this.speed = 0;
+          this.recalculateTargetPosition();
+        }
+
+        recalculateTargetPosition() {
+          const minDimension = Math.min(STATE.viewportWidth, STATE.viewportHeight);
+          const scale = minDimension / CONFIG.heart.scaleFactorDivider;
+
+          if (STATE.displayMode === 0) {
+            const t = Math.random() * Math.PI * 2;
+            const heartPoint = MathUtilityService.calculateHeartPosition(t);
+            this.targetPos.set(
+              heartPoint.x * scale + STATE.viewportWidth / 2,
+              heartPoint.y * scale + STATE.viewportHeight / 2 + CONFIG.heart.offsetY
+            );
+          } else if (STATE.displayMode === 1) {
+            const spiralPoint = MathUtilityService.calculateSpiralPosition(0, this.index);
+            this.targetPos.set(
+              spiralPoint.x + STATE.viewportWidth / 2,
+              spiralPoint.y + STATE.viewportHeight / 2
+            );
+          } else if (STATE.displayMode === 2) {
+            const theta = (this.index / 800) * Math.PI * 2;
+            const rosePoint = MathUtilityService.calculateRosePosition(theta);
+            this.targetPos.set(
+              rosePoint.x + STATE.viewportWidth / 2,
+              rosePoint.y + STATE.viewportHeight / 2
+            );
+          } else {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = MathUtilityService.getRandomArbitrary(40, minDimension * 0.42);
+            this.targetPos.set(
+              Math.cos(angle) * dist + STATE.viewportWidth / 2,
+              Math.sin(angle) * dist + STATE.viewportHeight / 2
+            );
+          }
+
+          this.size = MathUtilityService.getRandomArbitrary(1.2, 2.8);
+          const hue = MathUtilityService.getRandomArbitrary(
+            CONFIG.heart.hueBase,
+            CONFIG.heart.hueBase + CONFIG.heart.hueRange
+          );
+          this.color = `hsl(${hue}, 100%, ${MathUtilityService.getRandomArbitrary(55, 82)}%)`;
+          this.speed = MathUtilityService.getRandomArbitrary(0.02, 0.065);
+        }
+
+        updateState() {
+          if (STATE.isStarted) {
+            this.pos.x += (this.targetPos.x - this.pos.x) * this.speed;
+            this.pos.y += (this.targetPos.y - this.pos.y) * this.speed;
+          } else {
+            this.pos.y -= 0.65;
+            if (this.pos.y < 0) this.pos.y = STATE.viewportHeight;
+          }
+        }
+
+        render(context) {
+          context.save();
+          context.fillStyle = this.color;
+          context.shadowBlur = 6;
+          context.shadowColor = this.color;
+          context.beginPath();
+          context.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+        }
+      }
+
+      class ParticleExplosionFX {
+        constructor(x, y) {
+          this.pos = new Vector2D(x, y);
+          this.particles = [];
+          this.initExplosion();
+        }
+
+        initExplosion() {
+          for (let i = 0; i < 60; i++) {
+            const velocity = Vector2D.random2D().mult(MathUtilityService.getRandomArbitrary(2, 8));
+            const life = MathUtilityService.getRandomArbitrary(30, 60);
+            const size = MathUtilityService.getRandomArbitrary(2, 5);
+            const hue = MathUtilityService.getRandomArbitrary(310, 360);
+            this.particles.push({
+              pos: this.pos.copy(),
+              vel: velocity,
+              life: life,
+              maxLife: life,
+              size: size,
+              color: `hsl(${hue}, 100%, 70%)`
+            });
+          }
+        }
+
+        updateAndRender(context) {
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.pos.add(p.vel);
+            p.vel.mult(0.96);
+            p.life--;
+
+            const alpha = p.life / p.maxLife;
+            context.save();
+            context.fillStyle = p.color;
+            context.globalAlpha = alpha;
+            context.shadowBlur = 8;
+            context.shadowColor = p.color;
+            context.beginPath();
+            context.arc(p.pos.x, p.pos.y, p.size, 0, Math.PI * 2);
+            context.fill();
+            context.restore();
+
+            if (p.life <= 0) {
+              this.particles.splice(i, 1);
+            }
+          }
+        }
+
+        isDead() {
+          return this.particles.length === 0;
+        }
+      }
+
+      /* ========================================================================
+         5. MOTOR DE RENDERIZADO DUAL Y LOOP PRINCIPAL
+         ======================================================================== */
+      class CanvasAnimationRenderer {
+        constructor(mainCanvasId, fxCanvasId) {
+          this.mainCanvas = document.getElementById(mainCanvasId);
+          this.mainContext = this.mainCanvas.getContext("2d");
+          this.fxCanvas = document.getElementById(fxCanvasId);
+          this.fxContext = this.fxCanvas.getContext("2d");
+
+          this.particleList = [];
+          this.starList = [];
+          this.petalList = [];
+          this.explosionsList = [];
+          this.shootingStar = new ShootingStar();
+
+          this.initializeRenderer();
+        }
+
+        initializeRenderer() {
+          this.handleWindowResize();
+          window.addEventListener("resize", () => this.handleWindowResize());
+
+          const starCount = Math.floor(
+            STATE.viewportWidth * STATE.viewportHeight * CONFIG.canvas.starDensityRatio
+          );
+          const particleCount = Math.floor(
+            STATE.viewportWidth * STATE.viewportHeight * CONFIG.canvas.particleDensityRatio
+          );
+
+          for (let i = 0; i < Math.max(starCount, 150); i++) {
+            this.starList.push(new BackgroundStar());
+          }
+
+          for (let i = 0; i < Math.max(particleCount, 850); i++) {
+            this.particleList.push(new HeartParticle(i));
+          }
+
+          for (let i = 0; i < CONFIG.canvas.petalsCount; i++) {
+            this.petalList.push(new FallingPetal());
+          }
+
+          setInterval(() => {
+            if (Math.random() < 0.45 && !this.shootingStar.active) {
+              this.shootingStar.spawn();
+            }
+          }, 2800);
+
+          this.startRenderLoop();
+        }
+
+        triggerBurstEffect() {
+          const x = STATE.viewportWidth / 2;
+          const y = STATE.viewportHeight / 2 + CONFIG.heart.offsetY;
+          this.explosionsList.push(new ParticleExplosionFX(x, y));
+        }
+
+        switchDisplayMode() {
+          STATE.displayMode = (STATE.displayMode + 1) % 4;
+          this.particleList.forEach(particle => particle.recalculateTargetPosition());
+        }
+
+        handleWindowResize() {
+          STATE.viewportWidth = window.innerWidth;
+          STATE.viewportHeight = window.innerHeight;
+
+          this.mainCanvas.width = STATE.viewportWidth;
+          this.mainCanvas.height = STATE.viewportHeight;
+          this.fxCanvas.width = STATE.viewportWidth;
+          this.fxCanvas.height = STATE.viewportHeight;
+
+          this.particleList.forEach(particle => particle.recalculateTargetPosition());
+          this.starList.forEach(star => star.resetPosition());
+        }
+
+        startRenderLoop() {
+          const renderFrame = () => {
+            this.mainContext.fillStyle = `rgba(2, 0, 5, ${CONFIG.canvas.clearAlpha})`;
+            this.mainContext.fillRect(0, 0, STATE.viewportWidth, STATE.viewportHeight);
+            this.fxContext.clearRect(0, 0, STATE.viewportWidth, STATE.viewportHeight);
+
+            this.starList.forEach(star => {
+              star.updateState();
+              star.render(this.mainContext);
+            });
+
+            this.shootingStar.updateState();
+            this.shootingStar.render(this.mainContext);
+
+            this.particleList.forEach(particle => {
+              particle.updateState();
+              particle.render(this.mainContext);
+            });
+
+            this.petalList.forEach(petal => {
+              petal.updateState();
+              petal.render(this.mainContext);
+            });
+
+            for (let i = this.explosionsList.length - 1; i >= 0; i--) {
+              const exp = this.explosionsList[i];
+              exp.updateAndRender(this.fxContext);
+              if (exp.isDead()) {
+                this.explosionsList.splice(i, 1);
+              }
+            }
+
+            requestAnimationFrame(renderFrame);
+          };
+
+          requestAnimationFrame(renderFrame);
+        }
+      }
+
+      /* ========================================================================
+         6. INICIALIZACIÓN DE COMPONENTES E INTERFAZ DE USUARIO
+         ======================================================================== */
+      document.addEventListener("DOMContentLoaded", () => {
+        const audioEngine = new SynthesizerAudioEngine();
+        const animationRenderer = new CanvasAnimationRenderer("mainCanvas", "fxCanvas");
+
+        const startScreen = document.getElementById("startScreen");
+        const startBtn = document.getElementById("startBtn");
+        const bottomControls = document.getElementById("bottomControls");
+        const musicBtn = document.getElementById("musicBtn");
+        const modeBtn = document.getElementById("modeBtn");
+        const letterBtn = document.getElementById("letterBtn");
+        const burstBtn = document.getElementById("burstBtn");
+        const volumeSlider = document.getElementById("volumeSlider");
+
+        const modalOverlay = document.getElementById("modalOverlay");
+        const closeBtn = document.getElementById("closeBtn");
+
+        startBtn.addEventListener("click", async () => {
+          if (STATE.isStarted) return;
+          STATE.isStarted = true;
+
+          await audioEngine.startPlayback();
+
+          startScreen.classList.add("hidden");
+          bottomControls.classList.add("visible");
+        });
+
+        musicBtn.addEventListener("click", async () => {
+          const isNowPlaying = await audioEngine.togglePlaybackState();
+          musicBtn.textContent = isNowPlaying ? "🔊 Música" : "🔇 Música";
+        });
+
+        modeBtn.addEventListener("click", () => {
+          animationRenderer.switchDisplayMode();
+        });
+
+        burstBtn.addEventListener("click", () => {
+          animationRenderer.triggerBurstEffect();
+        });
+
+        volumeSlider.addEventListener("input", (event) => {
+          const newVolume = parseFloat(event.target.value);
+          audioEngine.setVolumeLevel(newVolume);
+        });
+
+        letterBtn.addEventListener("click", () => {
+          modalOverlay.classList.add("active");
+        });
+
+        closeBtn.addEventListener("click", () => {
+          modalOverlay.classList.remove("active");
+        });
+
+        modalOverlay.addEventListener("click", (event) => {
+          if (event.target === modalOverlay) {
+            modalOverlay.classList.remove("active");
+          }
+        });
       });
 
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    function startGalaxy() {
-      isStarted = true;
-      
-      const music = document.getElementById('bgMusic');
-      music.play().catch(e => console.log("Audio play error:", e));
-
-      document.getElementById('startScreen').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('letterBtn').style.display = 'block';
-      }, 800);
-    }
-
-    function openModal() {
-      document.getElementById('modalOverlay').classList.add('active');
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('active');
-    }
+    })();
   </script>
 </body>
 </html>
